@@ -1,0 +1,8 @@
+name: ${project.name}
+version: ${project.version}
+main: me.nullicorn.slimeball.spigot.SlimeBallPlugin
+api-version: "1.15"
+load: STARTUP
+
+authors: [ Nullicorn ]
+description: ${project.description}

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>slimeball</artifactId>
+    <groupId>me.nullicorn</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>me.nullicorn.slimeball</groupId>
+  <artifactId>spigot-plugin</artifactId>
+  <name>SlimeBall</name>
+  <description>Save and load in-memory worlds from .slime files</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <slimeball.baseName>${project.name}-${project.version}</slimeball.baseName>
+  </properties>
+
+  <dependencies>
+    <!-- Spigot API -->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.15.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Slime Data Loader -->
+    <dependency>
+      <groupId>me.nullicorn.slimeball</groupId>
+      <artifactId>slime</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+      </plugin>
+
+      <!-- Shade Dependencies -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.1</version>
+        <configuration>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <executions>
+          <!-- MacOS Build -->
+          <execution>
+            <id>shade-mac-osx</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>target/${slimeball.baseName}-macos_amd64.jar</outputFile>
+              <artifactSet>
+                <includes>
+                  <include>me.nullicorn.slimeball:slime</include>
+                  <include>com.github.TheNullicorn:Nedit</include>
+                  <include>com.github.Phoenix616.IDConverter:mappings</include>
+                  <include>com.github.luben:zstd-jni:*:darwin_x86_64</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+
+          <!-- Windows Build -->
+          <execution>
+            <id>shade-windows</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>target/${slimeball.baseName}-windows_amd64.jar</outputFile>
+              <artifactSet>
+                <includes>
+                  <include>me.nullicorn.slimeball:slime</include>
+                  <include>com.github.TheNullicorn:Nedit</include>
+                  <include>com.github.Phoenix616.IDConverter:mappings</include>
+                  <include>com.github.luben:zstd-jni:*:win_amd64</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+
+          <!-- Linux Build -->
+          <execution>
+            <id>shade-linux</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>target/${slimeball.baseName}-linux_amd64.jar</outputFile>
+              <artifactSet>
+                <includes>
+                  <include>me.nullicorn.slimeball:slime</include>
+                  <include>com.github.TheNullicorn:Nedit</include>
+                  <include>com.github.Phoenix616.IDConverter:mappings</include>
+                  <include>com.github.luben:zstd-jni:*:linux_amd64</include>
+                </includes>
+              </artifactSet>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+</project>
